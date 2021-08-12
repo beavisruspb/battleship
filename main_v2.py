@@ -49,7 +49,16 @@ class MyShip:
             if not cell.wounded:
                 #значит кораблик еще барахтается
                 self.live = True
+                #дальше можно и не проверять
+                return True
+        return False
 
+def multi_hit(cells):
+
+    for cell in cells:
+        print("\nПульнем по {}".format(cell))
+        cell.check()
+        print("Плывем дальше?: {}\n".format(cell.ship.setLiveStatus()))
 
 def main():
     #создаем ячейки игрового поля
@@ -57,29 +66,16 @@ def main():
     a2 = MyCell()
     a3 = MyCell()
 
-    #создаем корабли определяя список палуб для корабля
+    #создаем корабли определяя список ячеек для корабля
     ship1 = MyShip([a1, a2, a3])
-
-    print("кораблик", vars(ship1))
-
-    a1.check()
-
-    print(vars(a1))
-
-    a3.check()
-
-    print(vars(a3))
-
-    a2.check()
-
-    print(vars(a2))
-
-    print("Кораблик приплыл", vars(ship1))
+    print("\nВот такой получился корабик:\n", vars(ship1), "\nНу и что, что текстовый. Зато {} палубный\n".format(len(ship1.cells)))
 
     #таким образом коробль оживить нельзя ведь ячейки уже битые
     #необходимо либо оживить ячейки, либо указать нестреляные
     #ship1.__init__([a2, a1, a3])
     #print(vars(ship1))
+
+    multi_hit([a1, a2, a3])
 
 if __name__ == "__main__":
     main()
