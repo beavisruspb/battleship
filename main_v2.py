@@ -58,7 +58,7 @@ def multi_hit(cells):
     for cell in cells:
         print("\nПульнем по {}".format(cell))
         cell.check()
-        print("Плывем дальше?: {}\n".format(cell.ship.setLiveStatus()))
+        print("Плывем дальше?: {}".format(cell.ship.setLiveStatus()))
 
 def main():
     #создаем ячейки игрового поля
