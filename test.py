@@ -1,24 +1,21 @@
-print (ord("a"), ord("z"))
+def getWidhtIndex(width):
 
-start = ord("a")
-stop = ord("z")
-width = 10
+    from string import ascii_lowercase
+    import itertools
 
-#def mstring(count):
-#    start = ord("a")
-#    stop = ord("z")
-#    list = []
+    ss = list()
 
-#    for i in range(start, stop+1):
-
-index = dict()
-
-razrad = width // 26
-if razrad // 26 != 0:
-    razrad += 1
-
-for r in range(razrad):
-    
+    #ваще не понимаю как это работает
+    def iter_all_strings():
+        for size in itertools.count(1):
+            for s in itertools.product(ascii_lowercase, repeat=size):
+                yield "".join(s)
 
 
-#print(index)
+    for s in iter_all_strings():
+        ss.append(s)
+        if len(ss) == width:
+            break
+    return ss
+
+print(getList(10000))
