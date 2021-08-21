@@ -84,7 +84,7 @@ class Field:
                 #Проходим по всей длине шипа
                 for i in range(shipLong):
                     #берем срез из 3 ячеек
-                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[startPosH : startPosH + 2])
+                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[startPosH : startPosH + 3])
                 
                 #Если в указанной области нет заблокированных ячеек
                 if not self.__checkBlockCells(region):
