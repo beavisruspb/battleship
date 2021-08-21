@@ -20,5 +20,8 @@ class Cell:
             self.closed = False
             #если ячейка еще не подстрелена и есть корабль
             if self.ship:
+                print("Попал")
                 return True
             return False
+        print("Сюда уже стреляли")
+        return False
