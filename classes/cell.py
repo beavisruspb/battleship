@@ -11,7 +11,6 @@ class Cell:
     #Запоминаем адрес корабля
     def setShip(self, ship):
         self.ship = ship
-        self.block = True
     
     #Проверяем выстрел
     def hit(self):
