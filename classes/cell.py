@@ -21,6 +21,7 @@ class Cell:
             if self.ship:
                 print("Попал")
                 return True
+            print("Мазила")
             return False
         print("Сюда уже стреляли")
-        return False
+        return None
