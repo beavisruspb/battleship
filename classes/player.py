@@ -127,13 +127,18 @@ class AIPlayer(Player):
     def turn():
         print('true')
 
-g = Game()
-g.start()
-#g.players[0].printField()
+        
+def main():
+    g = Game()
+    g.start()
+    #g.players[0].printField()
 
 
-#print(g.players)
-g.players[0].turn()
-g.players[0].turn()
-g.players[0].turn()
-#print (g.players[0].isAlive()) 
+    #print(g.players)
+    g.players[0].turn()
+    g.players[0].turn()
+    g.players[0].turn()
+    #print (g.players[0].isAlive()) 
+    
+if __name__ == "__main__":
+    main()
