@@ -1,5 +1,5 @@
-from players import Player
-from players import AIPlayer
+from player import Player
+from player import AIPlayer
 
 class Game:
     players = []
