@@ -3,13 +3,14 @@ conf = {
     "real_player_num" : 1,
     "width" : 10,
     "height" : 10,
-    ai_players : ['easy']
+    "ai_players" : ['easy']
 }
 
 
 def main():
     game = Game()
-    game.start(real_player_num, width, height, ai_players = ['easy'])
+    #game.start(real_player_num, width, height, ai_players = ['easy'])
+    game.start(conf)
     return
 
 if __name__ == "__main__":
