@@ -158,7 +158,7 @@ class Field:
         shipCount = 0
         #перебираем все шипы
         for ship in self.ships:
-            if ship:
+            if ship.isAlive():
                 shipCount += 1
         return shipCount
 
