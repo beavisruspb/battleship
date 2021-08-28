@@ -98,7 +98,7 @@ class Field:
 
         print ( "Для шипа длиной {} палуб(а\ы) выбрана начальная позиция с координатами {}{} и направлением  {}".format( shipLong, startPosW, startPosH + 1, direct) )
 
-        ship = Ship()
+        ship = Ship() 
         cellsShip = list()
         if direct == "down":
             for cell in self.cells.get(startPosW)[startPosH : startPosH + shipLong]:
