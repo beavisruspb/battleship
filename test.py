@@ -1,4 +1,4 @@
-def getWidhtIndex(width):
+def getList(width):
 
     from string import ascii_lowercase
     import itertools
@@ -9,6 +9,7 @@ def getWidhtIndex(width):
     def iter_all_strings():
         for size in itertools.count(1):
             for s in itertools.product(ascii_lowercase, repeat=size):
+                #
                 yield "".join(s)
 
 

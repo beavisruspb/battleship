@@ -27,6 +27,7 @@ class Field:
         def iter_all_strings():
             for size in itertools.count(1):
                 for s in itertools.product(ascii_lowercase, repeat=size):
+                    # join собирает содержиме итерируемого объекта s в строку
                     yield "".join(s)
 
 
@@ -121,19 +122,49 @@ class Field:
     #    3 - 2хп
     #    4 - 1оп
     def placeShips(self, width, height):
-               
-        cellsCount = width * height
-        factor = cellsCount // 100
-        factor = 1 if factor < 1 else factor
 
-        for i in range(factor):
-            self.__placeOneShip(4, width, height)
-            for a in range(2):
-                self.__placeOneShip(3, width, height)
-            for a in range(3):
-                self.__placeOneShip(2, width, height)
-            for a in range(4):
-                self.__placeOneShip(1, width, height)
+        #========================================================#
+        #   Вариант предложенный Денисом                         #
+        #========================================================#
+
+        #определяем количество ячеек занятых клетками кораблей
+        num_cells_ship = width * height // 5
+        if width * height % 5 > 0:
+            num_cells_ship += 1
+
+        #Собираем клетки кораблей в корабли. Согласно классическому виду игры - это пирамида, где колличество одиночных кораблей
+        #равно длине самого крупного корабля
+
+        #словарь в котором индекс это количество палуб, а значение - количество кораблей данного типа
+        ships = {}
+        i, size = 1, 0
+        while True :
+            size += i
+            if num_cells_ship < size: 
+                break      
+            num_cells_ship -= size       
+            i += 1
+
+        #Собираем начальную пирамидку кораблей
+        for j in range(i-1):
+            ships.update({ i-j-1 : j+1 })
+
+        #Сортируем оставшиеся клетки кораблей не уложившиеся в классическую пирамиду
+        if num_cells_ship >= i  and (num_cells_ship > size//2):
+            num_cells_ship -= i
+            ships.update({ i : 1 })
+
+        for j in range(i-1):
+            if num_cells_ship >= i-j-1:
+                num_cells_ship -= i-j-1
+                ships[i-j-1] += 1
+        
+        #========================================================#
+        #========================================================#
+
+        for i,v in ships.items():
+            for a in range(v):
+                self.__placeOneShip(i, width, height)
         return
 
     #Создаем игровое поле
