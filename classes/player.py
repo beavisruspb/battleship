@@ -1,5 +1,5 @@
 class Game():
-    players = [];
+    players = [];  
 
     def start(self, n = 3, w = 6, h = 3, ai_n = 2, lvl = 'hard'):
         num = 0;
