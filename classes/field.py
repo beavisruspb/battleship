@@ -166,6 +166,7 @@ class Field:
             for a in range(v):
                 self.__placeOneShip(i, width, height)
         return
+        
 
     #Создаем игровое поле
     def makeField(self, width, height):
