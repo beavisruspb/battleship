@@ -140,7 +140,7 @@ class Field:
         i, size = 1, 0
         while True :
             size += i
-            if num_cells_ship < size: 
+            if num_cells_ship < size:
                 break      
             num_cells_ship -= size       
             i += 1
