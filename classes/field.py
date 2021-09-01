@@ -57,35 +57,81 @@ class Field:
         while True:
 
             #Выбираем ориентацию шипа
-            direct = random.choice(["down", "right"])
+            #direct = random.choice(["down", "right"])
+            direct = random.choice(["down"])
             #Выбираем ключ
             startPosW = random.choice(indexList)
             #Выбираем индекс
             startPosH = random.randint(0, height - 1)
 
             #если  вниз и начальная точка + длина меньше высоты
-            if direct == "down" and startPosH + shipLong <= height:                            
+            if direct == "down" and startPosH + shipLong - 1 < height:                            
+            
+                
+                #индекс конечной точки корабля
+                endSlisePosH = startPosH + shipLong
+
+                if startPosH == 0:
+                    startSlisePosH = 0
+                else: 
+                    startSlisePosH = startPosH - 1
+                if startPosH + shipLong < height:
+                    endSlisePosH += 1
+
+
                 region = list()
+
                 #Лист срезов от начальной точки до начальной точки + длина шипа
                 #Ячейки шипа и вокруг него
-                region.append(self.cells.get(startPosW) [ startPosH  : startPosH + shipLong])
+                region.append(self.cells.get(startPosW) [ startSlisePosH  : endSlisePosH])
+                #если ключ не является первым
                 if indexList.index(startPosW) != 0:
-                    region.append(self.cells.get(indexList [indexList.index(startPosW) - 1] ) [ startPosH  : startPosH + shipLong])
+                    #добалвяем срез левого столбца
+                    region.append(self.cells.get(indexList [indexList.index(startPosW) - 1] ) [ startSlisePosH  : endSlisePosH])
+                #если ключ не является последним
                 if indexList.index(startPosW) < len(indexList) - 1:
-                    region.append(self.cells.get(indexList [indexList.index(startPosW) + 1]) [ startPosH  : startPosH + shipLong])
+                    #Добавляем срез справа от корабля
+                    region.append(self.cells.get(indexList [indexList.index(startPosW) + 1]) [ startSlisePosH  : endSlisePosH])
                 
+
                 #Если в указанной области нет заблокированных ячеек
                 if not self.__checkBlockCells(region):
                     #Выходим из цикла выбора начальной позиции
                     break
 
             #если  вправо и индекс начальной точки + длина шипа меньше количества элементов в листе с числовыми ключами
-            if direct == "right" and indexList.index(startPosW) + shipLong <= len(indexList):
+            if direct == "right" and indexList.index(startPosW) + shipLong - 1 < len(indexList):
+
                 region = list()
+
+                #индекс ячейки над кораблем
+                if startPosH > 0:
+                    startSlisePosH = startPosH - 1
+                    endSlisePosH = startSlisePosH + 3                 
+                else:
+                    startSlisePosH = 0
+                    endSlisePosH = startSlisePosH + 2
+
+                # if startPosH + 1 >= len(indexList):
+                #     endSlisePosH = startPosH
+                # else:
+                #     endSlisePosH = startPosH + 1
+
+                #если стартовый столбец не первый тогда
+                if indexList.index(startPosW) > 0:
+                    #берем срез из 3 ячеек предстощего столбца
+                    region.append(self.cells.get( indexList [ indexList.index(startPosW) - 1 ] )[ startSlisePosH : endSlisePosH ])
+
+                #если последняя ячейка корабля не упирается в стенку
+                if indexList.index(startPosW) + shipLong < len(indexList):
+                    #берем столбец за кораблем
+                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + 1 ] )[ startSlisePosH : endSlisePosH ])
+
                 #Проходим по всей длине шипа
                 for i in range(shipLong):
-                    #берем срез из 3 ячеек
-                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[startPosH : startPosH + 3])
+                    
+                    #берем срез из 3 ячеек для каждого столбка корабля
+                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[ startSlisePosH : endSlisePosH ])
                 
                 #Если в указанной области нет заблокированных ячеек
                 if not self.__checkBlockCells(region):
@@ -101,11 +147,14 @@ class Field:
 
         ship = Ship() 
         cellsShip = list()
+
+        #если корабль строится вниз
         if direct == "down":
-            for cell in self.cells.get(startPosW)[startPosH : startPosH + shipLong]:
+            for cell in self.cells.get(startPosW)[ startPosH : startPosH + shipLong]:
                 cell.setShip(ship)
                 cellsShip.append(cell)
             ship.cells = cellsShip
+
         if direct == "right":
             for i in range(shipLong):
                 self.cells.get( indexList [ indexList.index(startPosW) + i ] )[startPosH].setShip(ship)
@@ -195,6 +244,6 @@ class Field:
         return shipCount
 
 if __name__ == "__main__":
-    field = Field(100,70)
+    field = Field(3,3)
     print("Живых кораблей {}".format(field.shipsAlive()))
     exit()

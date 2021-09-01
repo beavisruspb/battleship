@@ -1,22 +1,6 @@
-def getList(width):
-
-    from string import ascii_lowercase
-    import itertools
-
-    ss = list()
-
-    #ваще не понимаю как это работает
-    def iter_all_strings():
-        for size in itertools.count(1):
-            for s in itertools.product(ascii_lowercase, repeat=size):
-                #
-                yield "".join(s)
-
-
-    for s in iter_all_strings():
-        ss.append(s)
-        if len(ss) == width:
-            break
-    return ss
-
-print(getList(10000))
+a = [0,1,2,3,4]
+print(0,a[0:1])
+print(1,a[1:1])
+print(2,a[1:2])
+print(3,a[1:3])
+print(3,a[4:5])
