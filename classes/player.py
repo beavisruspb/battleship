@@ -13,6 +13,8 @@ class Game():
     def getPlayers(self):
         return self.players;
 
+        #fack
+
 class Field():
     cells = [];
     def __init__(self, width = 10, height = 10):
