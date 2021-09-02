@@ -1,5 +1,5 @@
-from ship import Ship
-from cell import Cell
+from classes.ship import Ship
+from classes.cell import Cell
 import random
 
 from string import ascii_lowercase
@@ -49,7 +49,8 @@ class Field:
 
             #Выбираем ориентацию шипа
             direct = random.choice(["down", "right"])
-            #direct = random.choice(["down"])
+            #direct = "down"
+            #direct = "right"
             #Выбираем ключ
             startPosW = random.choice(indexList)
             #Выбираем индекс
@@ -114,7 +115,7 @@ class Field:
                 #если последняя ячейка корабля не упирается в стенку
                 if indexList.index(startPosW) + shipLong < len(indexList):
                     #берем столбец за кораблем
-                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + 1 ] )[ startSlicePosH : endSlicePosH ])
+                    region.append(self.cells.get( indexList [ indexList.index(startPosW) + shipLong ] )[ startSlicePosH : endSlicePosH ])
                     #print("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) + shipLong ], startSlicePosH, endSlicePosH))
 
                 #Проходим по всей длине шипа
