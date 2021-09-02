@@ -13,8 +13,6 @@ class Game():
     def getPlayers(self):
         return self.players;
 
-        #fack
-
 class Field():
     cells = [];
     def __init__(self, width = 10, height = 10):
@@ -95,7 +93,7 @@ class Player():
             target = input('Чьи корабли будем топить? Введите номер игрока:');
             if re.match('\d{1,2}', target) is not None:
                 int_target = int(target);
-            print("Введите номер игрока из списка, просто циферку, например '" + str(k) + "':");
+            else: print("Введите номер игрока из списка, просто циферку, например '" + str(k) + "':");
 
         return self.game.players[int(target) -1];
 
@@ -191,8 +189,8 @@ class AIPlayer(Player):
             return choice_target;
 
         if self.number <= num:
-            return players[num] ;
-        return players[num - 1] ;
+            return players[num-1] ;
+        return players[num] ;
 
     def verAnalysisTarget(self, target):
         num_cells, close, purpose = 0, 0, 0  ;
