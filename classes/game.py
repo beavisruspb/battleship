@@ -37,7 +37,7 @@ class Game:
                             break
         
         
-        
+        #to be continue
 
     def isGameFinished(self):
         alives = 0
