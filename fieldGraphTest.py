@@ -10,11 +10,11 @@ def window_close():
     root.destroy()
     root.quit()
 
-if __name__ == "__main__":
+def tkmods():
     sizeCellW = pixW // width
     sizeCellH = pixH // height
     field = Field(width,height)
-
+    
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', window_close)
     root.geometry("{}x{}".format(pixW, pixH))
@@ -51,3 +51,7 @@ if __name__ == "__main__":
         column += 1
 
     root.mainloop()
+
+
+if __name__ == "__main__":
+    tkmods()
