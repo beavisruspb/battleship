@@ -10,7 +10,6 @@ def main():
     #пробуем загрузить зависимости
     try:
         from PyQt5.QtWidgets import QApplication
-        tkmods(field)
     except ImportError:
         #если с зависимостями голяк пробуем выполниться с библиотекой tkinter
         tkmods(field)
