@@ -37,6 +37,49 @@ class Field:
                 break
         return ss
 
+    #========================================================#
+    #   Фенкция генерации количества кораблей                #
+    #       предложенная Денисом                             #
+    #========================================================#
+    def __getShipsCountDict(self, width, height):
+
+        #определяем количество ячеек занятых клетками кораблей
+        num_cells_ship = width * height // 5
+        if width * height % 5 > 0:
+            num_cells_ship += 1
+
+        #Собираем клетки кораблей в корабли. Согласно классическому виду игры - это пирамида, где колличество одиночных кораблей
+        #равно длине самого крупного корабля
+
+        #словарь в котором индекс это количество палуб, а значение - количество кораблей данного типа
+        ships = {}
+        i, size = 1, 0
+        while True :
+            size += i
+            if num_cells_ship < size:
+                break      
+            num_cells_ship -= size       
+            i += 1
+
+        #Собираем начальную пирамидку кораблей
+        for j in range(i-1):
+            ships.update({ i-j-1 : j+1 })
+
+        #Сортируем оставшиеся клетки кораблей не уложившиеся в классическую пирамиду
+        if num_cells_ship >= i  and (num_cells_ship > size//2):
+            num_cells_ship -= i
+            ships.update({ i : 1 })
+
+        for j in range(i-1):
+            if num_cells_ship >= i-j-1:
+                num_cells_ship -= i-j-1
+                ships[i-j-1] += 1
+        
+        #возвращаем словарь где ключ это длина шипа, а значение количество шипов указанной длины
+        return ships
+        #========================================================#
+        #========================================================#
+
     #Размещаем корабль на поле
     def __placeOneShip(self, shipLong, width, height):
 
@@ -49,8 +92,7 @@ class Field:
 
             #Выбираем ориентацию шипа
             direct = random.choice(["down", "right"])
-            #direct = "down"
-            #direct = "right"
+
             #Выбираем ключ
             startPosW = random.choice(indexList)
             #Выбираем индекс
@@ -164,65 +206,16 @@ class Field:
         ##print("Добавляем к селф.шипс наш шип", ship)
         self.ships.append(ship)
 
-    # На каждые 100 ячеек:
-    #    1 - 4хп
-    #    2 - 3хп
-    #    3 - 2хп
-    #    4 - 1оп
     def placeShips(self, width, height):
 
-        #========================================================#
-        #   Вариант предложенный Денисом                         #
-        #========================================================#
+        shipsDict = self.__getShipsCountDict(width, height)
 
-        #определяем количество ячеек занятых клетками кораблей
-        num_cells_ship = width * height // 5
-        if width * height % 5 > 0:
-            num_cells_ship += 1
-
-        #Собираем клетки кораблей в корабли. Согласно классическому виду игры - это пирамида, где колличество одиночных кораблей
-        #равно длине самого крупного корабля
-
-        #словарь в котором индекс это количество палуб, а значение - количество кораблей данного типа
-        ships = {}
-        i, size = 1, 0
-        while True :
-            size += i
-            if num_cells_ship < size:
-                break      
-            num_cells_ship -= size       
-            i += 1
-
-        #Собираем начальную пирамидку кораблей
-        for j in range(i-1):
-            ships.update({ i-j-1 : j+1 })
-
-        #Сортируем оставшиеся клетки кораблей не уложившиеся в классическую пирамиду
-        if num_cells_ship >= i  and (num_cells_ship > size//2):
-            num_cells_ship -= i
-            ships.update({ i : 1 })
-
-        for j in range(i-1):
-            if num_cells_ship >= i-j-1:
-                num_cells_ship -= i-j-1
-                ships[i-j-1] += 1
-        
-        #========================================================#
-        #========================================================#
-
-        for i,v in ships.items():
+        for i,v in shipsDict.items():
             for a in range(v):
                 self.__placeOneShip(i, width, height)
-        return
         
-
     #Создаем игровое поле
     def makeField(self, width, height):
-
-        if width < 10:
-            width = 10
-        if height < 10:
-            height = 10
 
         #если адресов ячеек не передали и свойство cells объекта так же пустое то возвращает пустое игровое поле
         for a in self.__getWidhtIndex(width):
