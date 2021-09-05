@@ -1,5 +1,5 @@
 class Game():
-    players = [];
+    players = [];  
 
     def start(self, n = 3, w = 6, h = 3, ai_n = 2, lvl = 'hard'):
         num = 0;
@@ -93,7 +93,7 @@ class Player():
             target = input('Чьи корабли будем топить? Введите номер игрока:');
             if re.match('\d{1,2}', target) is not None:
                 int_target = int(target);
-            print("Введите номер игрока из списка, просто циферку, например '" + str(k) + "':");
+            else: print("Введите номер игрока из списка, просто циферку, например '" + str(k) + "':");
 
         return self.game.players[int(target) -1];
 
@@ -189,8 +189,8 @@ class AIPlayer(Player):
             return choice_target;
 
         if self.number <= num:
-            return players[num] ;
-        return players[num - 1] ;
+            return players[num-1] ;
+        return players[num] ;
 
     def verAnalysisTarget(self, target):
         num_cells, close, purpose = 0, 0, 0  ;
