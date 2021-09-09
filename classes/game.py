@@ -29,21 +29,26 @@ class Game:
                 self.players.append(
                     AIPlayer(self, width, height, level, number))
 
-        while not self.isGameFinished():
+        while True:
             for player in self.players:
-                if player.isAlive() == True:
+                if player.isAlive():
                     while True:
                         print("Ходит игрок " + player.number)
                         if player.turn() == False:
                             break
+            if self.isGameFinished():
+                break
 
-        # to be continued
+        for player in self.players:
+            if player.isAlive():
+                print('Game Over! Winner: ' + str(player.number))
+                return self.finish()
 
     def isGameFinished(self):
         alives = 0
 
         for player in self.players:
-            if player.isAlive() == True:
+            if player.isAlive():
                 alives += 1
 
         if alives > 1:
@@ -51,9 +56,14 @@ class Game:
 
         return True
 
-    def getPlayers(self):
-        players = []
-        pass
+    def getPlayers(self, alives=False):
+        if alives == True:
+            return self.players
+        alivePlayers = []
+        for player in self.players:
+            if player.isAlive():
+                alivePlayers.append(player)
+        return alivePlayers
 
     def finish():
-        pass
+        return True
