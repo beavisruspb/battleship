@@ -1,38 +1,27 @@
-from tkinter import *
-from classes.field import Field
-width = 50
-height = 35 
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QGridLayout, QWidget
+from PyQt5.QtGui import QPixmap
 
-def window_close():
-    root.destroy()
-    root.quit()
+class Example(QWidget):
 
-if __name__ == "__main__":
-    sizeCellW = 1000 // width
-    sizeCellH = 800 // height
-    field = Field(width,height)
+    def __init__(self):
+        super().__init__()
 
-    root = Tk()
-    root.protocol('WM_DELETE_WINDOW', window_close)
-    root.geometry("1000x800")
-    root.resizable(True, True) #разрешить изменение высоты и ширины окна
+        self.grid = QGridLayout()
+        for i in range(5):
+            for j in range(2):
+                im = QPixmap("./img/icon.jpg")
+                im = im.scaled(60, 60, aspectRatioMode = 0)
+                label = QLabel()
+                label.setPixmap(im)
+                self.grid.addWidget(label, j, i)
+        self.setLayout(self.grid)
 
-    #создаем рабочую область
-    frame = Frame(root)
-    frame.grid()
-    
-    rowCount = 0
-    for key,val in field.cells.items():
-        rowCount += 1  
-        columnCount = 0
-        for cell in val:
-            columnCount += 1
-            if cell.ship:
-                bgColor = "black"
-            elif cell.block:
-                bgColor = "yellow"
-            else:
-                bgColor = "white"
-            c = Canvas(frame, background = bgColor, height = sizeCellH*0.8, width = sizeCellW*0.8).grid(column = rowCount , row = columnCount)
+        self.setGeometry(50,50,800,600)
+        self.setWindowTitle("PyQT show image")
+        self.show()
 
-    root.mainloop()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
