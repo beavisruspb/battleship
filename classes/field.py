@@ -1,6 +1,6 @@
 from classes.ship import Ship
 from classes.cell import Cell
-import random
+import random, logging
 
 from string import ascii_lowercase
 import itertools
@@ -11,11 +11,29 @@ class Field:
 
     ships = list()
 
-    def __init__(self, width = 10, height = 10):
+    def __init__(self, width = 10, height = 10, logLevel = logging.DEBUG):
+        #Настраивается логирование
+        #Объект шаблона
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        #Объект консоли
+        consoleOut = logging.StreamHandler()
+        #Объект файла лога
+        fileLog = logging.FileHandler("field.log")
+        #Устанавливаем формат сообщения для дескрипторов устройств
+        [stream.setFormatter(formatter) for stream in [fileLog, consoleOut]]
+        #Создаем логгер
+        self.log = logging.getLogger("Field_Obj")
+        #Добавляем дескрипторы устройств к объекту логера
+        [self.log.addHandler(handler) for handler in [consoleOut, fileLog]]
+        #Устанавливаем уровень логирования для объекта логера
+        self.log.setLevel(logLevel)
+
         self.makeField(width, height)
         self.placeShips(width, height)
         return
 
+    def __del__(self):
+        self.log.debug("Объекту кранты")
 
     #Служебная функция для правильного составления буквенных индексов
     #Возвращает list стрингов
@@ -83,7 +101,7 @@ class Field:
     #Размещаем корабль на поле
     def __placeOneShip(self, shipLong, width, height):
 
-        ##print("Длина корабля {}. Пробуем разместить его на поле размером {}x{}".format(shipLong, width, height))
+        self.log.debug("Длина корабля {}. Пробуем разместить его на поле размером {}x{}".format(shipLong, width, height))
 
         indexList = self.__getWidhtIndex(width)
 
@@ -152,19 +170,19 @@ class Field:
                 if indexList.index(startPosW) > 0:
                     #берем срез из 3 ячеек предстощего столбца
                     region.append(self.cells.get( indexList [ indexList.index(startPosW) - 1 ] )[ startSlicePosH : endSlicePosH ])
-                    #print("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) - 1 ], startSlicePosH, endSlicePosH))
+                    self.log.debug("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) - 1 ], startSlicePosH, endSlicePosH))
 
                 #если последняя ячейка корабля не упирается в стенку
                 if indexList.index(startPosW) + shipLong < len(indexList):
                     #берем столбец за кораблем
                     region.append(self.cells.get( indexList [ indexList.index(startPosW) + shipLong ] )[ startSlicePosH : endSlicePosH ])
-                    #print("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) + shipLong ], startSlicePosH, endSlicePosH))
+                    self.log.debug("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) + shipLong ], startSlicePosH, endSlicePosH))
 
                 #Проходим по всей длине шипа
                 for i in range(shipLong):
                     #берем срез из 3 ячеек для каждого столбка корабля
                     region.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[ startSlicePosH : endSlicePosH ])
-                    #print("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) + i ], startSlicePosH, endSlicePosH))
+                    self.log.debug("Выбран столбец с ключем {} и ячейки с индексами {}-{}".format(indexList [ indexList.index(startPosW) + i ], startSlicePosH, endSlicePosH))
                 
                 blockCell = False
                 cellsList = list()
@@ -184,7 +202,7 @@ class Field:
                 for cell in column:
                     cell.block = True
 
-        #print ( "Для шипа длиной {} палуб(а\ы) выбрана начальная позиция с координатами {}{} и направлением  {}".format( shipLong, startPosW, startPosH + 1, direct) )
+        self.log.debug( "Для шипа длиной {} палуб(а\ы) выбрана начальная позиция с координатами {}{} и направлением  {}".format( shipLong, startPosW, startPosH + 1, direct) )
 
         ship = Ship() 
         cellsShip = list()
@@ -202,8 +220,6 @@ class Field:
                 cellsShip.append(self.cells.get( indexList [ indexList.index(startPosW) + i ] )[startPosH])
             ship.setCells(cellsShip)
         
-        ##print("Ячейки шипа {}", ship.cells)
-        ##print("Добавляем к селф.шипс наш шип", ship)
         self.ships.append(ship)
 
     def placeShips(self, width, height):
@@ -237,5 +253,5 @@ class Field:
 
 if __name__ == "__main__":
     field = Field(100,200)
-    print("Живых кораблей {}".format(field.shipsAlive()))
+    field.log.info("Живых кораблей: {}".format(field.shipsAlive()))
     exit()
