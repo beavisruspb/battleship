@@ -4,7 +4,7 @@ class Game():
     def start(self, n = 3, w = 6, h = 3, ai_n = 2, lvl = 'hard'):
         num = 0;
         for i in range(n - ai_n):
-            num += 1;
+            num += 1;   
             self.players.append(Player(self, w, h, num));
 
         for i in range(ai_n):
@@ -228,7 +228,7 @@ class AIPlayer(Player):
 g = Game();
 g.start();
 #g.players[0].printField();
-
+print('ok')
 
 #print(g.players)
 for i in range(8):
